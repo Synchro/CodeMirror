@@ -23,6 +23,7 @@ CodeMirror.defineMode("smartymixed", function(config) {
   var settings, regs, helpers, parsers,
   htmlMixedMode = CodeMirror.getMode(config, "htmlmixed"),
   smartyMode = CodeMirror.getMode(config, "smarty"),
+  escapeRegexp = function(str) { return str.replace(/[\-\[\]\/\{}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"); };
 
   settings = {
     rightDelimiter: '}',
@@ -37,11 +38,11 @@ CodeMirror.defineMode("smartymixed", function(config) {
   }
 
   regs = {
-    smartyComment: new RegExp("^" + settings.leftDelimiter + "\\*"),
-    literalOpen: new RegExp(settings.leftDelimiter + "literal" + settings.rightDelimiter),
-    literalClose: new RegExp(settings.leftDelimiter + "\/literal" + settings.rightDelimiter),
-    hasLeftDelimeter: new RegExp(".*" + settings.leftDelimiter),
-    htmlHasLeftDelimeter: new RegExp("[^<>]*" + settings.leftDelimiter)
+    smartyComment: new RegExp("^" + escapeRegexp(settings.leftDelimiter) + "\\*"),
+    literalOpen: new RegExp(escapeRegexp(settings.leftDelimiter) + "literal" + escapeRegexp(settings.rightDelimiter)),
+    literalClose: new RegExp(escapeRegexp(settings.leftDelimiter) + "\/literal" + escapeRegexp(settings.rightDelimiter)),
+    hasLeftDelimeter: new RegExp(".*" + escapeRegexp(settings.leftDelimiter)),
+    htmlHasLeftDelimeter: new RegExp("[^<>]*" + escapeRegexp(settings.leftDelimiter))
   };
 
   helpers = {
